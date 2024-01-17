@@ -67,7 +67,9 @@ pub mod rentable_sol {
     pub fn withdraw(ctx: Context<Withdraw>) -> Result<()> {
         let state = &mut ctx.accounts.rentable_token_pda;
         let clock = Clock::get()?;
-        require!( clock.unix_timestamp < state.expiration, Errors::NotExpired );
+        if let Some(_) = state.renter {
+            require!( clock.unix_timestamp >= state.expiration, Errors::NotExpired );
+        }
         require!( ctx.program_id == &ctx.accounts.lamports_from.key(), Errors::WrongAddress ); 
         token::transfer(
             // Create new Cross Program Invocation Context
