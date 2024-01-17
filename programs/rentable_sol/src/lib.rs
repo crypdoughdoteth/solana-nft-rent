@@ -184,8 +184,6 @@ pub struct Withdraw<'info> {
 #[derive(Accounts)]
 pub struct ActiveRental<'info> {
     pub rentable_token_pda: Account<'info, RentableToken>,
-    #[account(address = rentable_token_pda.renter.unwrap())]
-    pub signer: Signer<'info>
 }
 
 #[error_code]
