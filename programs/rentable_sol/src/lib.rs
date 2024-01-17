@@ -51,6 +51,8 @@ pub mod rentable_sol {
             ctx.accounts.system_program.signer_key() != None,
             Errors::NoSigner
         );
+        let clock = Clock::get()?;
+        state.expiration = clock.unix_timestamp + state.expiration;
         state.renter = Some(*ctx.accounts.system_program.signer_key().unwrap());
         let cpi_context = CpiContext::new(
             ctx.accounts.system_program.to_account_info(),
